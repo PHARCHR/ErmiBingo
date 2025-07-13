@@ -40,7 +40,7 @@ const login = async (req, res) => {
 
       const mailOptions = {
         from: "fargeta92@gmail.com",
-        to: "fargeta92@gmail.com",
+        to: "abrhamtamiru50@gmail.com",
         subject: "ሎግን ማስታወቂያ",
         text: `አንድ ሰው ሎግን አድረገ።\nየመግቢያ ጊዜ፡ ${loginTime}`,
       };
