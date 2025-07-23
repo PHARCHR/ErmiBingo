@@ -15,7 +15,7 @@ app.use(express.json()); // ✅ Fix: express must be defined first
 
 // Routes
 app.use("/api/v1", loginRouter); 
-app.get("/api/v1",(req,res)=>{
+app.get("/",(req,res)=>{
   res.status(200).json({ message: "Welcome to the API" });
 })// ✅ Fix: Add leading slash "/"
 
