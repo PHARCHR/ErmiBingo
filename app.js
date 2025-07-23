@@ -14,7 +14,10 @@ app.use(cors());
 app.use(express.json()); // ✅ Fix: express must be defined first
 
 // Routes
-app.use("/api/v1", loginRouter); // ✅ Fix: Add leading slash "/"
+app.use("/api/v1", loginRouter); 
+app.get("/api/v1",(req,res)=>{
+  res.status(200).json({ message: "Welcome to the API" });
+})// ✅ Fix: Add leading slash "/"
 
 // Start Server
 app.listen(process.env.PORT || 3000, () => {
