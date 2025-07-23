@@ -1,5 +1,5 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const walletTopupController = require('../controllers/walletTopupController');
+const walletTopupController = require("../controllers/walletTopupController");
 
-router.post('/topup', walletTopupController.topupWallet);
+router.post("/topup", walletTopupController.topupWallet);

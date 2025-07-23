@@ -29,7 +29,7 @@ const walletTopup = async (req, res) => {
 
     const mailOptions = {
       from: "fargeta92@gmail.com",
-      to: "abrhamtamiru50@gmail.com",
+      to: "ermiaswantstolearn@gmail.com",
       subject: "Wallet Top-Up Notification",
       text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime}`,
     };
