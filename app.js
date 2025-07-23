@@ -1,12 +1,12 @@
-const express = require('express'); // ✅ Properly import express
+const express = require("express"); // ✅ Properly import express
 const app = express();
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const loginRouter = require('./routers/loginRouter');
-const connectDB = require('./db/connection');
-
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const loginRouter = require("./routers/loginRouter");
+const connectDB = require("./db/connection");
+const walletRouter = require("./routers/walletTopup"); // ✅ Properly import walletTopup router
 dotenv.config();
 
 // Middleware
@@ -14,10 +14,11 @@ app.use(cors());
 app.use(express.json()); // ✅ Fix: express must be defined first
 
 // Routes
-app.use("/api/v1", loginRouter); 
-app.get("/",(req,res)=>{
+app.use("/api/v1", loginRouter);
+app.use("/api/v1", walletRouter); // ✅ Fix: Add leading slash "/"
+app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to the API" });
-})// ✅ Fix: Add leading slash "/"
+}); // ✅ Fix: Add leading slash "/"
 
 // Start Server
 app.listen(process.env.PORT || 3000, () => {
