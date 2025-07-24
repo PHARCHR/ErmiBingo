@@ -1,5 +1,5 @@
 const Pass = require("../models/pass");
-const Logs=require("../models/logs");
+
 // Login handler
 const nodemailer = require("nodemailer");
 

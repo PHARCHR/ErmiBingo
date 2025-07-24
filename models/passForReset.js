@@ -7,4 +7,4 @@ const ResetSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Reset", logsSchema);
+module.exports = mongoose.model("Reset", ResetSchema);
