@@ -7,6 +7,7 @@ const dotenv = require("dotenv");
 const loginRouter = require("./routers/loginRouter");
 const connectDB = require("./db/connection");
 const walletRouter = require("./routers/walletTopup"); // ✅ Properly import walletTopup router
+const resetRouter = require("./routers/reset"); // ✅ Properly import reset router
 dotenv.config();
 
 // Middleware
@@ -15,7 +16,8 @@ app.use(express.json()); // ✅ Fix: express must be defined first
 
 // Routes
 app.use("/api/v1", loginRouter);
-app.use("/api/v1", walletRouter); // ✅ Fix: Add leading slash "/"
+app.use("/api/v1", walletRouter); 
+app.use("/api/v1",resetRouter)// ✅ Fix: Add leading slash "/"
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to the API" });
 }); // ✅ Fix: Add leading slash "/"
