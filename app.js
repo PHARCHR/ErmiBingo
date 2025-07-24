@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
 }); // ✅ Fix: Add leading slash "/"
 
 // Start Server
-app.listen(process.env.PORT || 8000, () => {
+app.listen(process.env.PORT || 6000, () => {
   connectDB();
   console.log(`Server is running on port ${process.env.PORT}`);
 });
