@@ -1,10 +1,18 @@
 const nodemailer = require("nodemailer");
-
+const Pass = require("../models/pass"); // Assuming you have a Pass model for user data
 const walletTopup = async (req, res) => {
-  const { amount } = req.body;
+  const { amount, email } = req.body;
 
   if (!amount || amount <= 0) {
     return res.status(400).json({ message: "Valid amount is required" });
+  }
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error while finding user" });
   }
 
   try {
@@ -29,7 +37,7 @@ const walletTopup = async (req, res) => {
 
     const mailOptions = {
       from: "fargeta92@gmail.com",
-      to: "ermiaswantstolearn@gmail.com",
+      to: user.sendEmail, // Assuming user has a sendEmail field for notification
       subject: "Wallet Top-Up Notification",
       text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime}`,
     };

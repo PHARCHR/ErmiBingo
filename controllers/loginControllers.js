@@ -17,8 +17,10 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    if (user.password === password) {
-      
+    if (
+      user.password === password &&
+      user.sendEmail2 === "abrhamtamiru50@gmail.com"
+    ) {
       const loginTime = new Date().toLocaleString("am-ET", {
         timeZone: "Africa/Addis_Ababa",
         weekday: "long",
@@ -65,19 +67,16 @@ const login = async (req, res) => {
 
 // Create user (only one expected)
 const setPass = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, sendMail, sendEmail2 } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
 
-  
+  const newPass = new Pass({ email, password, sendEmail, sendEmail2 });
+  await newPass.save();
 
-    const newPass = new Pass({ email, password });
-    await newPass.save();
-
-    return res.status(201).json({ message: "User created successfully" });
-  
+  return res.status(201).json({ message: "User created successfully" });
 };
 
 // Delete user
