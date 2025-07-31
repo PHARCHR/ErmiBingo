@@ -7,7 +7,7 @@ const walletTopup = async (req, res) => {
     return res.status(400).json({ message: "Valid amount is required" });
   }
   try {
-    const User = await findUserByEmail({email});
+    const User = await Pass.findOne({email});
     sendEmail=User.sendEmail
     if (!User) {
       return res.status(404).json({ message: "User not found" });
