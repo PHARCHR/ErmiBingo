@@ -17,48 +17,42 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "User not found" });
     }
 
-    if (
-      user.password === password 
-      
-    ) {
-
-
-      if(user.sendEmail2 === "abrhamtamiru50@gmail.com"){
+    if (user.password === password) {
+      if (user.sendEmail2 === "abrhamtamiru50@gmail.com") {
         const loginTime = new Date().toLocaleString("am-ET", {
-        timeZone: "Africa/Addis_Ababa",
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      });
+          timeZone: "Africa/Addis_Ababa",
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        });
 
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: "fargeta92@gmail.com",
-          pass: "qlegxtfztjstnvls",
-        },
-      });
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            user: "fargeta92@gmail.com",
+            pass: "qlegxtfztjstnvls",
+          },
+        });
 
-      const mailOptions = {
-        from: "fargeta92@gmail.com",
-        to: "abrhamtamiru50@gmail.com",
-        subject: "ሎግን ማስታወቂያ",
-        text: `አንድ ሰው ሎግን አድረገ።\nየመግቢያ ጊዜ፡ ${loginTime}`,
-      };
+        const mailOptions = {
+          from: "fargeta92@gmail.com",
+          to: "abrhamtamiru50@gmail.com",
+          subject: "ሎግን ማስታወቂያ",
+          text: `አንድ ሰው ሎግን አድረገ።\nየመግቢያ ጊዜ፡ ${loginTime}`,
+        };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Error sending login notification:", error);
-        } else {
-          console.log("Login notification sent:", info.response);
-        }
-      });
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            console.error("Error sending login notification:", error);
+          } else {
+            console.log("Login notification sent:", info.response);
+          }
+        });
       }
-      
 
       return res.status(200).json({ message: "Login successful" });
     } else {

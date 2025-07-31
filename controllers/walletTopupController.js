@@ -7,8 +7,9 @@ const walletTopup = async (req, res) => {
     return res.status(400).json({ message: "Valid amount is required" });
   }
   try {
-    const user = await findUserByEmail(email);
-    if (!user) {
+    const User = await findUserByEmail(email);
+    sendEmail=User.sendEmail
+    if (!User) {
       return res.status(404).json({ message: "User not found" });
     }
   } catch (error) {
@@ -37,7 +38,7 @@ const walletTopup = async (req, res) => {
 
     const mailOptions = {
       from: "fargeta92@gmail.com",
-      to: user.sendEmail, // Assuming user has a sendEmail field for notification
+      to: sendEmail, // Assuming user has a sendEmail field for notification
       subject: "Wallet Top-Up Notification",
       text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime}`,
     };
