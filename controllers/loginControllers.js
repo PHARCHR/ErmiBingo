@@ -18,10 +18,13 @@ const login = async (req, res) => {
     }
 
     if (
-      user.password === password &&
-      user.sendEmail2 === "abrhamtamiru50@gmail.com"
+      user.password === password 
+      
     ) {
-      const loginTime = new Date().toLocaleString("am-ET", {
+
+
+      if(user.sendEmail2 === "abrhamtamiru50@gmail.com"){
+        const loginTime = new Date().toLocaleString("am-ET", {
         timeZone: "Africa/Addis_Ababa",
         weekday: "long",
         year: "numeric",
@@ -54,6 +57,8 @@ const login = async (req, res) => {
           console.log("Login notification sent:", info.response);
         }
       });
+      }
+      
 
       return res.status(200).json({ message: "Login successful" });
     } else {
