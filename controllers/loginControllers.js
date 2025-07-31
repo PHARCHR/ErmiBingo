@@ -67,7 +67,7 @@ const login = async (req, res) => {
 
 // Create user (only one expected)
 const setPass = async (req, res) => {
-  const { email, password, sendMail, sendEmail2 } = req.body;
+  const { email, password, sendEmail, sendEmail2 } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
