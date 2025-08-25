@@ -81,7 +81,13 @@ const setPass = async (req, res) => {
 // Delete user
 const deletePass = async (req, res) => {
   try {
-    const result = await Pass.deleteMany({});
+    const { email } = req.body; // Expect email in request body
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const result = await Pass.findOneAndDelete({ email });
 
     if (!result) {
       return res.status(404).json({ message: "User not found" });
@@ -92,6 +98,7 @@ const deletePass = async (req, res) => {
     return res.status(500).json({ message: "Error deleting user" });
   }
 };
+
 
 module.exports = {
   login,
