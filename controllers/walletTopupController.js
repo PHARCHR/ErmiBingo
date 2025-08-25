@@ -8,7 +8,7 @@ const walletTopup = async (req, res) => {
   }
   try {
     const User = await Pass.findOne({ email });
-    sendEmail = User.sendEmail;
+    
     if (!User) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -40,7 +40,7 @@ const walletTopup = async (req, res) => {
       from: "fargeta92@gmail.com",
       to: "wanawbingo@gmail.com", // Assuming user has a sendEmail field for notification
       subject: "Wallet Top-Up Notification",
-      text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime} by ${user.email}`,
+      text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime} by ${User.email}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
