@@ -81,7 +81,7 @@ const setPass = async (req, res) => {
 // Delete user
 const deletePass = async (req, res) => {
   try {
-    const { email } = req.body; // Expect email in request body
+    const { email } = req.query; // <-- get email from query instead of body
 
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
