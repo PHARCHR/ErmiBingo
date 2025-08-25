@@ -72,7 +72,7 @@ const setPass = async (req, res) => {
     return res.status(400).json({ message: "Email and password are required" });
   }
 
-  const newPass = new Pass({ email, password, sendEmail, sendEmail2 });
+  const newPass = new Pass({ email, password});
   await newPass.save();
 
   return res.status(201).json({ message: "User created successfully" });
