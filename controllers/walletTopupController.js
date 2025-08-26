@@ -18,6 +18,7 @@ const walletTopup = async (req, res) => {
     user = await Pass.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+      
     }
 
     // 3. UPDATE THE USER'S WALLET BALANCE (The Missing Core Functionality!)
@@ -46,8 +47,8 @@ const walletTopup = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.GMAIL_USER || "fargeta92@gmail.com", // Use environment variables!
-        pass: process.env.GMAIL_APP_PASSWORD || "qlegxtfztjstnvls",
+        user:  "fargeta92@gmail.com", // Use environment variables!
+        pass: "qlegxtfztjstnvls",
       },
     });
 
