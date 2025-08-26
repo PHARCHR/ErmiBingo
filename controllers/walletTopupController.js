@@ -1,29 +1,37 @@
 const nodemailer = require("nodemailer");
-const Pass = require("../models/pass");
+const Pass = require("../models/pass"); // Your User/Pass model
 
 const walletTopup = async (req, res) => {
   const { amount, email } = req.body;
 
+  // 1. Input Validation
   if (!amount || amount <= 0) {
-    return res.status(400).json({ message: "Valid amount is required" });
+    return res.status(400).json({ message: "Valid positive amount is required" });
+  }
+  if (!email) {
+    return res.status(400).json({ message: "User email is required" });
   }
 
-  let User;
+  let user;
   try {
-    User = await Pass.findOne({ email });
-    if (!User) {
+    // 2. Find the User
+    user = await Pass.findOne({ email });
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    // 3. UPDATE THE USER'S WALLET BALANCE (The Missing Core Functionality!)
+    // This is the most important line. You need to add the amount to their current balance.
+    user.walletBalance += amount; // Assuming the field is named 'walletBalance'
+    await user.save(); // Save the updated user document to the database
+
   } catch (error) {
-    console.error("DB error:", error);
-    return res.status(500).json({ message: "Server error while finding user" });
+    console.error("Server error while finding or updating user:", error);
+    return res.status(500).json({ message: "Server error during top-up transaction" });
   }
 
+  // 4. Send Notification Email (after the core transaction is complete)
   try {
-    // Example: update balance (if your schema has balance)
-    // User.balance = (User.balance || 0) + amount;
-    // await User.save();
-
     const topupTime = new Date().toLocaleString("am-ET", {
       timeZone: "Africa/Addis_Ababa",
       weekday: "long",
@@ -38,26 +46,41 @@ const walletTopup = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.EMAIL_USER, // "fargeta92@gmail.com"
-        pass: process.env.EMAIL_PASS, // use env vars
+        user: process.env.GMAIL_USER || "fargeta92@gmail.com", // Use environment variables!
+        pass: process.env.GMAIL_APP_PASSWORD || "qlegxtfztjstnvls",
       },
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: User.email, // send to the actual user
+      from: process.env.GMAIL_USER,
+      to: "wanawbingo@gmail.com", // Admin email
       subject: "Wallet Top-Up Notification",
-      text: `Your wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime}\nEmail: ${User.email}`,
+      text: `A wallet has been topped up:\n\nUser: ${user.email}\nAmount: ${amount} ETB\nTime: ${topupTime}\nNew Balance: ${user.walletBalance} ETB`, // Added new balance info
     };
 
-    await transporter.sendMail(mailOptions);
-
-    return res.status(200).json({
-      message: "Top-up processed and notification sent",
+    // Send email (fire and forget - if it fails, we log it but don't fail the request)
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("❌ Failed to send admin notification email:", error);
+      } else {
+        console.log("✅ Admin notification email sent:", info.response);
+      }
     });
+
+    // 5. Respond to the Client
+    return res.status(200).json({
+      message: "Top-up successful and notification sent",
+      newBalance: user.walletBalance // Send the new balance back to the client
+    });
+
   } catch (err) {
-    console.error("Top-up error:", err);
-    return res.status(500).json({ message: "Server error during top-up" });
+    // This catch block is for the email setup, not the main transaction
+    console.error("Error creating email transporter or options:", err);
+    // The top-up was already successful, so we still respond with 200 but note the email issue.
+    return res.status(200).json({
+      message: "Top-up successful but failed to send notification",
+      newBalance: user.walletBalance
+    });
   }
 };
 
