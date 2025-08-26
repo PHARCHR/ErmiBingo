@@ -56,7 +56,7 @@ const walletTopup = async (req, res) => {
       from: process.env.GMAIL_USER,
       to: "wanawbingo@gmail.com", // Admin email
       subject: "Wallet Top-Up Notification",
-      text: `A wallet has been topped up:\n\nUser: ${user.email}\nAmount: ${amount} ETB\nTime: ${topupTime}\nNew Balance: ${user.walletBalance} ETB`, // Added new balance info
+      text: `A wallet has been topped up:\n\nUser: ${user.email}\nAmount: ${amount} ETB\nTime: ${topupTime}`, // Added new balance info
     };
 
     // Send email (fire and forget - if it fails, we log it but don't fail the request)
