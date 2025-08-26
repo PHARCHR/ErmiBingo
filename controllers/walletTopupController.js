@@ -15,6 +15,7 @@ const walletTopup = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error while finding user" });
   }
+  const Email=User.email
 
   try {
     const topupTime = new Date().toLocaleString("am-ET", {
@@ -40,7 +41,7 @@ const walletTopup = async (req, res) => {
       from: "fargeta92@gmail.com",
       to: "wanawbingo@gmail.com", // Assuming user has a sendEmail field for notification
       subject: "Wallet Top-Up Notification",
-      text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime} by ${User.email}`,
+      text: `A wallet has been topped up:\n\nAmount: ${amount} ETB\nTime: ${topupTime} by ${Email}`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
